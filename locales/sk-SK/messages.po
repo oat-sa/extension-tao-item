@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-10 14:36\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: sk\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=4; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 3;\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,37 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Slovak\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] "%d iná."
+msgstr[1] "%d iné."
+msgstr[2] "%d iných."
+msgstr[3] "%d ďalší."
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "%d test"
+msgstr[1] "%d testy"
+msgstr[2] "%d testov"
+msgstr[3] "%d testov"
+
+msgid "%d users found"
+msgstr "Nájdených %d používateľov"
+
+msgid "%s, %d of %d"
+msgstr "%s, %d z %d"
+
+msgid "1 user found"
+msgstr "Nájdený 1 používateľ"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Poznámka</b>: Pre prázdne priečinky je dostupný iba formát RDF<br />."
 
 msgid "Actual size"
 msgstr "Skutočná veľkosť"
+
+msgid "Add a comment"
+msgstr "Pridať komentár"
 
 msgid "An error occurred while processing your request."
 msgstr "Pri spracovaní vašej žiadosti sa vyskytla chyba."
@@ -32,33 +58,30 @@ msgstr "Pri spracovaní vašej žiadosti sa vyskytla chyba."
 msgid "and"
 msgstr "a"
 
-msgid "and all of its content?"
-msgstr "a všetok jeho obsah?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "sa momentálne používajú v jednom alebo viacerých testoch, takže ich nemožno odstrániť:"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Naozaj chcete odstrániť priečinok?"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Naozaj chcete odstrániť priečinok %s a všetok jeho obsah?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Naozaj chcete odstrániť túto položku?"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr "Naozaj chcete odstrániť položku %s?"
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Naozaj chcete odstrániť tento priečinok a všetok jeho obsah?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Naozaj chcete túto položku odstrániť?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Tvorba"
+
+msgid "Be the first to add a comment"
+msgstr "Buďte prvý, kto pridá komentár"
+
+msgid "Bold"
+msgstr "Tučné písmo"
+
+msgid "Bulleted list"
+msgstr "Zoznam s odrážkami"
+
+msgid "Cancel"
+msgstr "Zrušiť"
 
 msgid "Class schema saved"
 msgstr "Schéma triedy bola uložená"
@@ -69,8 +92,8 @@ msgstr "Zatvoriť"
 msgid "Close console"
 msgstr "Zatvoriť konzolu"
 
-msgid "contains content that is currently in use."
-msgstr "obsahuje obsah, ktorý sa aktuálne používa."
+msgid "Comment formatting"
+msgstr "Formátovanie komentárov"
 
 #, tao-public
 msgid "Copy To"
@@ -83,9 +106,6 @@ msgstr "Vytvárajte a navrhujte položky a cvičenia."
 #, tao-public
 msgid "Delete"
 msgstr "Odstrániť"
-
-msgid "Deleting this class will break the"
-msgstr "Odstránením tohto priečinka sa preruší"
 
 msgid "Deleting this item will break the"
 msgstr "Odstránením tejto položky sa preruší"
@@ -103,11 +123,20 @@ msgstr "Toto znova nezobrazovať!"
 msgid "Duplicate"
 msgstr "Duplikovať"
 
+msgid "Edit"
+msgstr "Upraviť"
+
+msgid "Edit comment"
+msgstr "Upraviť komentár"
+
 msgid "Edit Item"
 msgstr "Upraviť položku"
 
 msgid "Edit item"
 msgstr "Upraviť položku"
+
+msgid "edited"
+msgstr "upravené"
 
 #, tao-public
 msgid "Export"
@@ -116,8 +145,14 @@ msgstr "Export"
 msgid "Expose the property value to create automated categories."
 msgstr "Použite hodnotu vlastnosti na vytvorenie automatických kategórií."
 
+msgid "External previewer load timeout"
+msgstr "Časový limit načítania externého náhľadu"
+
 msgid "Failed retrieving %s"
 msgstr "Nepodarilo sa načítať %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr "Nepodarilo sa získať tokeny pre externý nástroj na zobrazenie ukážky"
 
 msgid "Forbidden action"
 msgstr "Zakázaná akcia"
@@ -132,11 +167,17 @@ msgstr "Importovať"
 msgid "is currently in use."
 msgstr "sa momentálne používa."
 
+msgid "Italic"
+msgstr "Kurzíva"
+
 msgid "Item Model"
 msgstr "Model položky"
 
 msgid "Item not found"
 msgstr "Položka sa nenašla"
+
+msgid "Item preview"
+msgstr "Náhľad položky"
 
 msgid "Item saved"
 msgstr "Položka uložená"
@@ -158,6 +199,15 @@ msgstr "Na šírku"
 msgid "Last updated on %2s"
 msgstr "Naposledy aktualizované %2s"
 
+msgid "Link"
+msgstr "Odkaz"
+
+msgid "Loading preview..."
+msgstr "Načítava sa ukážka..."
+
+msgid "Loading users"
+msgstr "Načítavajú sa používatelia"
+
 msgid "Manage item class schema"
 msgstr "Spravovať schému triedy položiek"
 
@@ -172,6 +222,9 @@ msgstr "Spravovať schému"
 msgid "Mobile preview"
 msgstr "Náhľad na mobilných zariadeniach"
 
+msgid "More actions"
+msgstr "Viac akcií"
+
 #, tao-public
 msgid "Move"
 msgstr "Presunúť"
@@ -184,20 +237,29 @@ msgstr "Presunúť do"
 msgid "New class"
 msgstr "Nový priečinok"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Pre vybraný typ položky nie je k dispozícii žiadny nástroj na tvorbu položiek: %s"
+msgid "No comments yet"
+msgstr "Zatiaľ žiadne komentáre"
 
 msgid "No item type selected for the current item."
 msgstr "Pre aktuálnu položku nebol vybraný žiadny typ položky."
 
+msgid "No matching users"
+msgstr "Žiadni zodpovedajúci používatelia"
+
 msgid "Not yet available"
 msgstr "Zatiaľ nie je k dispozícii"
+
+msgid "Numbered list"
+msgstr "Číslovaný zoznam"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "Jedna alebo viac hodnôt sa nedá použiť ako automatické testovacie kategórie."
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Vymazané budú iba položky, ktoré neboli použité v žiadnom teste."
 
-msgid "other"
-msgstr "iné"
+msgid "Only users with access to this item can be mentioned."
+msgstr "Spomenutí môžu byť iba používatelia s prístupom k tejto položke."
 
 msgid "Please delete the subclasses before."
 msgstr "Najprv prosím vymažte podpriečinky."
@@ -207,6 +269,9 @@ msgstr "Najprv si prosím vyberte typ položky!"
 
 msgid "Portrait"
 msgstr "Na výšku"
+
+msgid "Post comment"
+msgstr "Pridať komentár"
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +287,20 @@ msgstr "Zverejnené „%1$s“ v jazyku „%2$s“"
 msgid "Remove this message"
 msgstr "Odstrániť túto správu"
 
+msgid "Reopen"
+msgstr "Znovu otvoriť"
+
+msgid "Resolve"
+msgstr "Vyriešiť"
+
 msgid "Resource deleted"
 msgstr "Zdroj bol odstránený"
 
 msgid "Retrieving external resources"
 msgstr "Získavanie externých zdrojov"
 
-msgid "s"
-msgstr "s"
+msgid "Save"
+msgstr "Uložiť"
 
 msgid "Some items in the folder "
 msgstr "Niektoré položky v priečinku "
@@ -237,11 +308,23 @@ msgstr "Niektoré položky v priečinku "
 msgid "Submit"
 msgstr "Odoslať"
 
-msgid "test"
-msgstr "test"
-
 msgid "The class"
 msgstr "Priečinok"
+
+msgid "The comment was not deleted."
+msgstr "Komentár nebol vymazaný."
+
+msgid "The comment was not reopened."
+msgstr "Komentár nebol znovu otvorený."
+
+msgid "The comment was not resolved."
+msgstr "Komentár nebol vyriešený."
+
+msgid "The comment was not saved."
+msgstr "Komentár sa neuložil."
+
+msgid "The comment was not updated."
+msgstr "Komentár nebol aktualizovaný."
 
 msgid "The file you tried to upload is not valid"
 msgstr "Súbor, ktorý ste sa pokúsili nahrať, nie je platný"
@@ -254,6 +337,9 @@ msgstr "Modul „Položky“ umožňuje vytváranie a navrhovanie položiek a cv
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Táto vlastnosť je vystavená pridaniu do kategórie. &#13 Odstrániť vystavenie?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "Hodnotu „%s“ nemožno použiť ako automatickú testovaciu kategóriu."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Tento náhľad sa môže prispôsobiť veľkosti Vašej obrazovky. Konečné vykreslenie sa môže líšiť."
@@ -277,11 +363,29 @@ msgstr "Vybraný zdroj sa nepodarilo odstrániť"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr "Vybraný zdroj sa nedá odstrániť, pretože nemáte potrebné práva na odstránenie časti jeho obsahu."
 
+msgid "Unable to load comments."
+msgstr "Nepodarilo sa načítať komentáre."
+
+msgid "Unable to load item preview"
+msgstr "Nepodarilo sa načítať ukážku položky"
+
+msgid "Unable to load users"
+msgstr "Nepodarilo sa načítať používateľov"
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Položku sa nepodarilo vykresliť z %s : %s %s"
 
 msgid "Unable to upload file"
 msgstr "Nepodarilo sa nahrať súbor"
+
+msgid "Unable to validate automatic test categories."
+msgstr "Nepodarilo sa overiť automatické testovacie kategórie."
+
+msgid "Underline"
+msgstr "Podčiarknutie"
+
+msgid "Use @ to mention a TAO user."
+msgstr "Na zmienku o používateľovi TAO použite znak @."
 
 msgid "using it:"
 msgstr "pomocou neho:"
