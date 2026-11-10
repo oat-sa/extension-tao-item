@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-07-03 11:58\n"
+"PO-Revision-Date: 2026-11-10 14:36\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nl_BE\n"
@@ -260,7 +260,7 @@ msgstr ""
 
 #, tao-public
 msgid "Translate"
-msgstr ""
+msgstr "Vertalen"
 
 msgid "Translation deleted"
 msgstr ""
@@ -281,7 +281,7 @@ msgid "Unable to render the item from %s : %s %s"
 msgstr ""
 
 msgid "Unable to upload file"
-msgstr ""
+msgstr "Kan het bestand niet uploaden"
 
 msgid "using it:"
 msgstr ""
