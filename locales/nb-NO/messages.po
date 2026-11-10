@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-01-15 11:08\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: nb_NO\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
-"X-Poedit-KeywordsList: __\n"
+"X-Poedit-KeywordsList: __,__p:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Crowdin-Project: tao-open-source\n"
@@ -20,11 +20,33 @@ msgstr ""
 "X-Crowdin-File-ID: 805\n"
 "Language-Team: Norwegian Bokmal\n"
 
+msgid "%d other."
+msgid_plural "%d others."
+msgstr[0] "%d annet."
+msgstr[1] "%d andre."
+
+msgid "%d test"
+msgid_plural "%d tests"
+msgstr[0] "%d test"
+msgstr[1] "%d tester"
+
+msgid "%d users found"
+msgstr "%d brukere funnet"
+
+msgid "%s, %d of %d"
+msgstr "%s, %d av %d"
+
+msgid "1 user found"
+msgstr "1 bruker funnet"
+
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>Merk</b>: For tomme klasser er RDF-formatet<br />det eneste tilgjengelige formatet."
 
 msgid "Actual size"
 msgstr "Faktisk størrelse"
+
+msgid "Add a comment"
+msgstr "Legg til en kommentar"
 
 msgid "An error occurred while processing your request."
 msgstr "Det oppstod en feil under behandling av forespørselen."
@@ -32,33 +54,30 @@ msgstr "Det oppstod en feil under behandling av forespørselen."
 msgid "and"
 msgstr "og"
 
-msgid "and all of its content?"
-msgstr "og alt innholdet?"
-
 msgid "are currently used in one or more tests, so they cannot be deleted:"
 msgstr "brukes i én eller flere prøvinger, så de kan ikke slettes:"
-
-msgid "Are you sure you want to delete the class"
-msgstr "Er du sikker på at du vil slette mappen"
 
 msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr "Er du sikker på at du vil slette klassen %s og alt innholdet?"
 
-msgid "Are you sure you want to delete the item"
-msgstr "Er du sikker på at du vil slette oppgaven"
-
 msgid "Are you sure you want to delete the item %s?"
 msgstr ""
-
-msgid "Are you sure you want to delete this class and all of its content?"
-msgstr "Er du sikker på at du vil slette denne mappen og alt innholdet i den?"
-
-msgid "Are you sure you want to delete this item?"
-msgstr "Er du sikker på at du vil slette denne oppgaven?"
 
 #, tao-public
 msgid "Authoring"
 msgstr "Rediger"
+
+msgid "Be the first to add a comment"
+msgstr "Bli den første til å legge til en kommentar"
+
+msgid "Bold"
+msgstr "Bold"
+
+msgid "Bulleted list"
+msgstr "Punktliste"
+
+msgid "Cancel"
+msgstr "Avbryt"
 
 msgid "Class schema saved"
 msgstr "Mappeskjema lagret"
@@ -69,8 +88,8 @@ msgstr "Lukk"
 msgid "Close console"
 msgstr "Lukk konsollen"
 
-msgid "contains content that is currently in use."
-msgstr "inneholder innhold som er i bruk."
+msgid "Comment formatting"
+msgstr "Kommentar formatering"
 
 #, tao-public
 msgid "Copy To"
@@ -83,9 +102,6 @@ msgstr "Opprett og design oppgaver."
 #, tao-public
 msgid "Delete"
 msgstr "Slett"
-
-msgid "Deleting this class will break the"
-msgstr "Hvis du sletter denne mappen, brytes"
 
 msgid "Deleting this item will break the"
 msgstr "Hvis du sletter denne oppgaven, brytes"
@@ -103,11 +119,20 @@ msgstr "Ikke vis dette igjen!"
 msgid "Duplicate"
 msgstr "Dupliser"
 
+msgid "Edit"
+msgstr "Redigere"
+
+msgid "Edit comment"
+msgstr "Rediger kommentar"
+
 msgid "Edit Item"
 msgstr "Rediger Oppgave"
 
 msgid "Edit item"
 msgstr "Rediger oppgave"
+
+msgid "edited"
+msgstr "redigert"
 
 #, tao-public
 msgid "Export"
@@ -116,8 +141,14 @@ msgstr ""
 msgid "Expose the property value to create automated categories."
 msgstr "Vis egenskapsverdien for å lage automatiserte kategorier."
 
+msgid "External previewer load timeout"
+msgstr "Tidsavbrudd for ekstern forbrukslast"
+
 msgid "Failed retrieving %s"
 msgstr "Kunne ikke hente %s"
+
+msgid "Failed to get tokens for external previewer"
+msgstr "Kan ikke få tokens for ekstern forhåndsviser"
 
 msgid "Forbidden action"
 msgstr "Forbudt handling"
@@ -132,11 +163,17 @@ msgstr "Importer"
 msgid "is currently in use."
 msgstr "er i bruk."
 
+msgid "Italic"
+msgstr "Italic"
+
 msgid "Item Model"
 msgstr "Standard"
 
 msgid "Item not found"
 msgstr "Oppgave ikke funnet"
+
+msgid "Item preview"
+msgstr "Element forhåndsvisning"
 
 msgid "Item saved"
 msgstr "Oppgave ble lagret"
@@ -158,6 +195,15 @@ msgstr "Landskap"
 msgid "Last updated on %2s"
 msgstr "Sist oppdatert på %2s"
 
+msgid "Link"
+msgstr "Lenke"
+
+msgid "Loading preview..."
+msgstr "Laster forhåndsvisning..."
+
+msgid "Loading users"
+msgstr "Laster brukere"
+
 msgid "Manage item class schema"
 msgstr "Administrer egenskaper for oppgavemappe"
 
@@ -172,6 +218,9 @@ msgstr "Administrer egenskaper"
 msgid "Mobile preview"
 msgstr "Forhåndsvisning for mobil"
 
+msgid "More actions"
+msgstr "Flere handlinger"
+
 #, tao-public
 msgid "Move"
 msgstr "Flytt"
@@ -184,20 +233,29 @@ msgstr "Flytt til"
 msgid "New class"
 msgstr "Ny mappe"
 
-msgid "No item authoring tool available for the selected type of item: %s"
-msgstr "Ingen redigeringsverktøy  er tilgjengelig for den valgte oppgavetypen: %s"
+msgid "No comments yet"
+msgstr "Ingen kommentarer ennå"
 
 msgid "No item type selected for the current item."
 msgstr "Ingen oppgavetype valgt for gjeldende oppgave."
 
+msgid "No matching users"
+msgstr "Ingen samsvarende brukere"
+
 msgid "Not yet available"
 msgstr "Ikke tilgjengelig enda"
+
+msgid "Numbered list"
+msgstr "Nummerert liste"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "Én eller flere verdier kan ikke brukes som automatisk prøvingskategorier."
 
 msgid "Only items not used in any test will be deleted."
 msgstr "Bare elementer som ikke brukes i en test vil bli slettet."
 
-msgid "other"
-msgstr "annen"
+msgid "Only users with access to this item can be mentioned."
+msgstr "Kun brukere med tilgang til dette elementet kan nevnes."
 
 msgid "Please delete the subclasses before."
 msgstr "Slett undermappene før."
@@ -207,6 +265,9 @@ msgstr "Velg først oppgavetypen!"
 
 msgid "Portrait"
 msgstr "Portrett"
+
+msgid "Post comment"
+msgstr "Legg inn kommentar"
 
 #, tao-public
 msgid "Preview"
@@ -222,14 +283,20 @@ msgstr "Publisert \"%1$s\" på språk \"%2$s"
 msgid "Remove this message"
 msgstr "Fjern denne meldingen"
 
+msgid "Reopen"
+msgstr "Gjenåpne"
+
+msgid "Resolve"
+msgstr "Løse"
+
 msgid "Resource deleted"
 msgstr "Ressurs ble slettet"
 
 msgid "Retrieving external resources"
 msgstr "Henter eksterne ressurser"
 
-msgid "s"
-msgstr ""
+msgid "Save"
+msgstr "Lagre"
 
 msgid "Some items in the folder "
 msgstr "Noen elementer i mappen "
@@ -237,11 +304,23 @@ msgstr "Noen elementer i mappen "
 msgid "Submit"
 msgstr "Lever"
 
-msgid "test"
-msgstr "prøve"
-
 msgid "The class"
 msgstr "Mappen"
+
+msgid "The comment was not deleted."
+msgstr "Kommentaren ble ikke slettet."
+
+msgid "The comment was not reopened."
+msgstr "Kommentaren ble ikke gjenåpnet."
+
+msgid "The comment was not resolved."
+msgstr "Kommentaren ble ikke løst."
+
+msgid "The comment was not saved."
+msgstr "Kommentaren ble ikke lagret."
+
+msgid "The comment was not updated."
+msgstr "Kommentaren ble ikke oppdatert."
 
 msgid "The file you tried to upload is not valid"
 msgstr "Filen du prøvde å laste opp er ikke gyldig"
@@ -254,6 +333,9 @@ msgstr "Oppgavemodulen muliggjør oppretting og design av oppgaver."
 
 msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "Egenskapen er utsatt for kategoritillegg. &#13Fjerning av visning?"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "Verdien \"%s\" kan ikke brukes som en automatisk test kategori."
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "Denne forhåndsvisningen kan skaleres for og tilpasses skjermen din. Den endelige gjengivelsen kan se annerledes ut."
@@ -277,11 +359,29 @@ msgstr "Kan ikke slette den valgte filen"
 msgid "Unable to delete the selected resource because you do not have the required rights to delete part of its content."
 msgstr ""
 
+msgid "Unable to load comments."
+msgstr "Kan ikke laste inn kommentarer."
+
+msgid "Unable to load item preview"
+msgstr "Kunne ikke laste inn forhåndsvisning"
+
+msgid "Unable to load users"
+msgstr "Kan ikke laste inn brukere"
+
 msgid "Unable to render the item from %s : %s %s"
 msgstr "Kan ikke gjengi oppgaven fra %s: %s %s"
 
 msgid "Unable to upload file"
 msgstr "Kan ikke laste opp fil"
+
+msgid "Unable to validate automatic test categories."
+msgstr "Kan ikke validere automatiske testkategorier."
+
+msgid "Underline"
+msgstr "Understreking"
+
+msgid "Use @ to mention a TAO user."
+msgstr "Bruk @ for å nevne en TFO-bruker."
 
 msgid "using it:"
 msgstr "bruker det:"
