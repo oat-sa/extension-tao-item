@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: TAO 2026.09\n"
-"PO-Revision-Date: 2026-09-03T12:49:13\n"
+"PO-Revision-Date: 2026-11-10 16:44\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja-JP\n"
@@ -125,13 +125,13 @@ msgid "Expose the property value to create automated categories."
 msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。"
 
 msgid "External previewer load timeout"
-msgstr ""
+msgstr "外部プレビューワーの読み込みタイムアウト"
 
 msgid "Failed retrieving %s"
 msgstr "検索失敗 %s"
 
 msgid "Failed to get tokens for external previewer"
-msgstr ""
+msgstr "外部プレビューア用のトークンを取得できませんでした"
 
 msgid "Forbidden action"
 msgstr "禁止アクション"
@@ -153,7 +153,7 @@ msgid "Item not found"
 msgstr "アイテムが見つかりません"
 
 msgid "Item preview"
-msgstr ""
+msgstr "アイテムのプレビュー"
 
 msgid "Item saved"
 msgstr "アイテムが保存されました"
@@ -176,7 +176,7 @@ msgid "Last updated on %2s"
 msgstr "最終更新日： %2s"
 
 msgid "Loading preview..."
-msgstr ""
+msgstr "プレビューを読み込み中..."
 
 msgid "Manage item class schema"
 msgstr "スキーマ管理"
@@ -298,7 +298,7 @@ msgid "Unable to delete the selected resource because you do not have the requir
 msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。"
 
 msgid "Unable to load item preview"
-msgstr ""
+msgstr "アイテムのプレビューを読み込むことができません"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
@@ -323,3 +323,115 @@ msgstr "いくつかのアイテムを削除できなかったことを示すメ
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"
+
+msgid "%d users found"
+msgstr "%d ユーザが見つかりました"
+
+msgid "%s, %d of %d"
+msgstr ""
+
+msgid "1 user found"
+msgstr "1人のユーザーが見つかりました"
+
+msgid "Add a comment"
+msgstr "コメントを追加"
+
+msgid "Be the first to add a comment"
+msgstr "最初にコメントを追加する"
+
+msgid "Bold"
+msgstr "Bold"
+
+msgid "Bulleted list"
+msgstr "箇条書きリスト"
+
+msgid "Cancel"
+msgstr "キャンセル"
+
+msgid "Comment formatting"
+msgstr "コメントの書式設定"
+
+#, tao-public
+msgid "Edit"
+msgstr "編集"
+
+msgid "Edit comment"
+msgstr "コメントを編集"
+
+msgid "edited"
+msgstr "編集済み"
+
+#, tao-public
+msgid "Italic"
+msgstr "Italic"
+
+msgid "Link"
+msgstr "リンク"
+
+msgid "Loading users"
+msgstr "ユーザーを読み込み中"
+
+msgid "More actions"
+msgstr "その他のアクション"
+
+#, tao-public
+msgid "No comments yet"
+msgstr "コメントはまだありません"
+
+msgid "No matching users"
+msgstr "一致するユーザーがありません"
+
+msgid "Numbered list"
+msgstr "番号付きリスト"
+
+msgid "One or more values cannot be used as automatic test categories."
+msgstr "1つ以上の値は自動テストカテゴリとして使用できません。"
+
+msgid "Only users with access to this item can be mentioned."
+msgstr "このアイテムへのアクセス権を持つユーザーだけに言及することができます。"
+
+msgid "Post comment"
+msgstr "コメントを投稿"
+
+#, tao-public
+msgid "Reopen"
+msgstr "再オープン"
+
+msgid "Resolve"
+msgstr "解決"
+
+msgid "Save"
+msgstr "保存"
+
+msgid "The comment was not deleted."
+msgstr "コメントは削除されていません。"
+
+msgid "The comment was not reopened."
+msgstr "コメントは再開されませんでした。"
+
+msgid "The comment was not resolved."
+msgstr "コメントは解決されませんでした。"
+
+msgid "The comment was not saved."
+msgstr "コメントは保存されませんでした。"
+
+msgid "The comment was not updated."
+msgstr "コメントは更新されませんでした。"
+
+msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr "値 \"%s\" は自動テストカテゴリとして使用できません。"
+
+msgid "Unable to load comments."
+msgstr "コメントを読み込めません。"
+
+msgid "Unable to load users"
+msgstr "ユーザーを読み込めません"
+
+msgid "Unable to validate automatic test categories."
+msgstr "自動テストカテゴリを検証できません。"
+
+msgid "Underline"
+msgstr "アンダーライン"
+ 
+msgid "Use @ to mention a TAO user."
+msgstr "@を使用してTAOユーザーをメンションします。"

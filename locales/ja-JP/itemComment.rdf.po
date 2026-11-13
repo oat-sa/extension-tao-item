@@ -1,0 +1,71 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: tao-open-source\n"
+"PO-Revision-Date: 2026-11-10 16:46\n"
+"Last-Translator: TAO Translation Team <translation@tao.lu>\n"
+"MIME-Version: 1.0\n"
+"Language: ja\n"
+"sourceLanguage: en-US\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Crowdin-Project: tao-open-source\n"
+"X-Crowdin-Project-ID: 590867\n"
+"X-Crowdin-Language: ja\n"
+"X-Crowdin-File: /[oat-sa.extension-tao-item] develop/locales/en-US/itemComment.rdf.po\n"
+"X-Crowdin-File-ID: 1344\n"
+"Language-Team: Japanese\n"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Authoring Comment"
+msgstr "作成コメント"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)"
+msgstr "アイテム、テスト、またはアセットに添付されたコラボレーションコメント (コンテンツ/QTIの一部ではありません)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource URI"
+msgstr "リソース URI"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resource type"
+msgstr "リソースタイプ"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "RDF class URI of the target: Item, Test, or Media"
+msgstr "ターゲットの RDF クラス URI : 項目、テスト、メディア"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author ID"
+msgstr "投稿者ID"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Author label"
+msgstr "作成者のラベル"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Comment body"
+msgstr "コメント本文"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Created at"
+msgstr "作成日時"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Edited"
+msgstr "編集済み"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment body was edited after creation (1/0)"
+msgstr "作成後にコメント本文を編集したかどうか (1/0)"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
+msgid "Resolved"
+msgstr "解決済み"
+
+msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
+msgid "Whether the comment was marked resolved (1/0)"
+msgstr "コメントが解決済みとマークされたかどうか (1/0)"
+
