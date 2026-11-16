@@ -17,6 +17,7 @@ msgstr ""
 "X-Crowdin-File-ID: 1344\n"
 "Language-Team: Japanese\n"
 
+
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring Comment"
 msgstr "作成コメント"
@@ -35,7 +36,7 @@ msgstr "リソースタイプ"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "RDF class URI of the target: Item, Test, or Media"
-msgstr "ターゲットの RDF クラス URI : 項目、テスト、メディア"
+msgstr "ターゲットの RDF クラス URI: 項目、テスト、メディア"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Author ID"
@@ -68,4 +69,3 @@ msgstr "解決済み"
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Whether the comment was marked resolved (1/0)"
 msgstr "コメントが解決済みとマークされたかどうか (1/0)"
-
