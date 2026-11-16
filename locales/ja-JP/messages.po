@@ -1,13 +1,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-10 16:44\n"
+"PO-Revision-Date: 2026-11-16 10:59\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
-"Language: ja-JP\n"
+"Language: ja\n"
 "sourceLanguage: en-US\n"
-"targetLanguage: ja-JP\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"targetLanguage: en-US\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Basepath: ../../\n"
 "X-Poedit-KeywordsList: __,__p:1,2\n"
@@ -22,20 +22,20 @@ msgstr ""
 
 msgid "%d other."
 msgid_plural "%d others."
-msgstr[0] "ほか%d件。"
+msgstr[0] "他 %d件"
 
 msgid "%d test"
 msgid_plural "%d tests"
 msgstr[0] "%d件のテスト"
 
 msgid "%d users found"
-msgstr "%d ユーザが見つかりました"
+msgstr "%d名のユーザーが見つかりました"
 
 msgid "%s, %d of %d"
-msgstr ""
+msgstr "%s（%d / %d）"
 
 msgid "1 user found"
-msgstr "1人のユーザーが見つかりました"
+msgstr "1名のユーザーが見つかりました"
 
 msgid "<b>Note</b>: For empty classes, the RDF format<br />is the only available format."
 msgstr "<b>メモ</b>: 空のクラスでは、RDF 形式<br />が唯一使用可能な形式です。"
@@ -66,13 +66,13 @@ msgid "Authoring"
 msgstr "オーサリング"
 
 msgid "Be the first to add a comment"
-msgstr "最初にコメントを追加する"
+msgstr "最初のコメントを追加しましょう"
 
 msgid "Bold"
-msgstr "Bold"
+msgstr "太字"
 
 msgid "Bulleted list"
-msgstr "箇条書きリスト"
+msgstr "箇条書き"
 
 msgid "Cancel"
 msgstr "キャンセル"
@@ -140,7 +140,7 @@ msgid "Expose the property value to create automated categories."
 msgstr "自動化されたカテゴリを作成するには、プロパティ値を公開します。"
 
 msgid "External previewer load timeout"
-msgstr "外部プレビューワーの読み込みタイムアウト"
+msgstr "外部プレビューアの読み込みタイムアウト"
 
 msgid "Failed retrieving %s"
 msgstr "検索失敗 %s"
@@ -162,7 +162,7 @@ msgid "is currently in use."
 msgstr "は、現在使用中です。"
 
 msgid "Italic"
-msgstr "Italic"
+msgstr "斜体"
 
 msgid "Item Model"
 msgstr "アイテムも出る"
@@ -171,7 +171,7 @@ msgid "Item not found"
 msgstr "アイテムが見つかりません"
 
 msgid "Item preview"
-msgstr "アイテムのプレビュー"
+msgstr "アイテムプレビュー"
 
 msgid "Item saved"
 msgstr "アイテムが保存されました"
@@ -217,7 +217,7 @@ msgid "Mobile preview"
 msgstr "モバイルプレビュー"
 
 msgid "More actions"
-msgstr "その他のアクション"
+msgstr "その他の操作"
 
 #, tao-public
 msgid "Move"
@@ -247,13 +247,13 @@ msgid "Numbered list"
 msgstr "番号付きリスト"
 
 msgid "One or more values cannot be used as automatic test categories."
-msgstr "1つ以上の値は自動テストカテゴリとして使用できません。"
+msgstr "一つ以上の値は自動テストカテゴリとして使用できません。"
 
 msgid "Only items not used in any test will be deleted."
 msgstr "テストで使用されていないアイテムだけが削除されます。"
 
 msgid "Only users with access to this item can be mentioned."
-msgstr "このアイテムへのアクセス権を持つユーザーだけに言及することができます。"
+msgstr "このアイテムへのアクセス権を持つユーザーのみメンションできます。"
 
 msgid "Please delete the subclasses before."
 msgstr "前にサブクラスを削除してください。"
@@ -285,7 +285,7 @@ msgid "Reopen"
 msgstr "再オープン"
 
 msgid "Resolve"
-msgstr "解決"
+msgstr "解決済みにする"
 
 msgid "Resource deleted"
 msgstr "リソースが削除されました"
@@ -306,19 +306,19 @@ msgid "The class"
 msgstr "クラス"
 
 msgid "The comment was not deleted."
-msgstr "コメントは削除されていません。"
+msgstr "コメントを削除できませんでした。"
 
 msgid "The comment was not reopened."
-msgstr "コメントは再開されませんでした。"
+msgstr "コメントを再オープンできませんでした。"
 
 msgid "The comment was not resolved."
-msgstr "コメントは解決されませんでした。"
+msgstr "コメントを解決済みにできませんでした。"
 
 msgid "The comment was not saved."
-msgstr "コメントは保存されませんでした。"
+msgstr "コメントを保存できませんでした。"
 
 msgid "The comment was not updated."
-msgstr "コメントは更新されませんでした。"
+msgstr "コメントを更新できませんでした。"
 
 msgid "The file you tried to upload is not valid"
 msgstr "アップロードしようとしたファイルは無効です。"
@@ -358,13 +358,13 @@ msgid "Unable to delete the selected resource because you do not have the requir
 msgstr "コンテンツの一部を削除するために必要な権限がないため、選択したリソースを削除できません。"
 
 msgid "Unable to load comments."
-msgstr "コメントを読み込めません。"
+msgstr "コメントを読み込めませんでした。"
 
 msgid "Unable to load item preview"
-msgstr "アイテムのプレビューを読み込むことができません"
+msgstr "アイテムプレビューを読み込めませんでした"
 
 msgid "Unable to load users"
-msgstr "ユーザーを読み込めません"
+msgstr "ユーザーを読み込めませんでした。"
 
 msgid "Unable to render the item from %s : %s %s"
 msgstr "%s からアイテムをレンダリングできません: %s %s"
@@ -376,10 +376,10 @@ msgid "Unable to validate automatic test categories."
 msgstr "自動テストカテゴリを検証できません。"
 
 msgid "Underline"
-msgstr "アンダーライン"
+msgstr "下線"
 
 msgid "Use @ to mention a TAO user."
-msgstr "@を使用してTAOユーザーをメンションします。"
+msgstr "@でユーザーをメンション"
 
 msgid "using it:"
 msgstr "で使用中です。"
@@ -398,3 +398,4 @@ msgstr "いくつかのアイテムを削除できなかったことを示すメ
 
 msgid "Your path contains error"
 msgstr "パスにエラーがあります。"
+
