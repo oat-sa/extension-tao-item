@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-10 16:46\n"
+"PO-Revision-Date: 2026-11-16 11:03\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -35,7 +35,7 @@ msgstr "リソースタイプ"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "RDF class URI of the target: Item, Test, or Media"
-msgstr "ターゲットの RDF クラス URI : 項目、テスト、メディア"
+msgstr "ターゲットの RDF クラス URI: 項目、テスト、メディア"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Author ID"
