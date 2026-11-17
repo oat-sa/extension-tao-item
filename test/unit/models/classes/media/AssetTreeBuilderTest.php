@@ -193,6 +193,29 @@ class AssetTreeBuilderTest extends TestCase
         );
     }
 
+    public function testBuildTreeSortsDirectoryChildrenLexicographicallyForMixedNumericLabels(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => 'taomedia://mediamanager/',
+            'label' => 'Media',
+            'children' => [
+                ['path' => '/2', 'label' => '2', 'parent' => 'root'],
+                ['path' => '/10', 'label' => '10', 'parent' => 'root'],
+                ['path' => '/1a', 'label' => '1a', 'parent' => 'root'],
+            ],
+        ]);
+
+        $result = $this->subject->buildTree(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
+        );
+
+        // Lexicographic (strcmp), not PHP 8.5 numeric-aware string <=>.
+        $this->assertSame(
+            ['10', '1a', '2'],
+            array_map(static fn (array $child): string => (string)$child['label'], $result['children'])
+        );
+    }
+
     public function testBuildClampsHugeChildrenOffsetWithoutTypeError(): void
     {
         $captured = null;

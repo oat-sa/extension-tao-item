@@ -191,10 +191,15 @@ class AssetTreeBuilder extends ConfigurableService implements
     protected function sortDirectoryStubs(array $directories): array
     {
         usort($directories, function (array $left, array $right): int {
-            $result = $this->sortValue($left, self::SORT_LABEL)
-                <=> $this->sortValue($right, self::SORT_LABEL);
+            $result = strcmp(
+                $this->sortValue($left, self::SORT_LABEL),
+                $this->sortValue($right, self::SORT_LABEL)
+            );
             if ($result === 0) {
-                $result = (string)($left['path'] ?? '') <=> (string)($right['path'] ?? '');
+                $result = strcmp(
+                    (string)($left['path'] ?? ''),
+                    (string)($right['path'] ?? '')
+                );
             }
 
             return $result;
