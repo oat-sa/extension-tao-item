@@ -170,6 +170,29 @@ class AssetTreeBuilderTest extends TestCase
         $this->assertSame(PHP_INT_MAX, $captured->getDepth());
     }
 
+    public function testBuildTreeSortsDirectoryChildrenAlphabetically(): void
+    {
+        $this->mediaSource->method('getDirectories')->willReturn([
+            'path' => 'taomedia://mediamanager/',
+            'label' => 'Media',
+            'children' => [
+                ['path' => '/batch-004', 'label' => 'batch-004', 'parent' => 'root'],
+                ['path' => '/batch-001', 'label' => 'batch-001', 'parent' => 'root'],
+                ['path' => '/batch-003', 'label' => 'batch-003', 'parent' => 'root'],
+                ['path' => '/batch-002', 'label' => 'batch-002', 'parent' => 'root'],
+            ],
+        ]);
+
+        $result = $this->subject->buildTree(
+            new AssetSearchQuery($this->mediaAsset, 'item-uri', 'en-US')
+        );
+
+        $this->assertSame(
+            ['batch-001', 'batch-002', 'batch-003', 'batch-004'],
+            array_map(static fn (array $child): string => (string)$child['label'], $result['children'])
+        );
+    }
+
     public function testBuildClampsHugeChildrenOffsetWithoutTypeError(): void
     {
         $captured = null;
