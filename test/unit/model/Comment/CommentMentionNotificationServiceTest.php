@@ -27,10 +27,11 @@ use oat\generis\model\data\Ontology;
 use oat\tao\model\menu\Perspective;
 use oat\tao\model\menu\Section;
 use oat\tao\model\menu\Tree;
-use oat\tao\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
-use oat\tao\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
-use oat\tao\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\tao\model\TaoOntology;
+use oat\tao\model\user\MentionEligibleUsersProviderInterface;
+use oat\taoDeliverConnect\model\TaskOrchestrator\CommentMentionDeepLinkBuilder;
+use oat\taoDeliverConnect\model\TaskOrchestrator\CommentMentionEmailTemplatePayload;
+use oat\taoDeliverConnect\model\TaskOrchestrator\TaskOrchestratorEmailService;
 use oat\taoItems\model\Comment\CommentMentionNotificationService;
 use oat\taoItems\model\Comment\ItemComment;
 use oat\taoItems\model\Comment\ResourceCommentType;
@@ -41,12 +42,14 @@ class CommentMentionNotificationServiceTest extends TestCase
 {
     private Ontology|MockObject $ontology;
     private TaskOrchestratorEmailService|MockObject $emailService;
-
+    private MentionEligibleUsersProviderInterface|MockObject $eligibleUsersProvider;
     protected function setUp(): void
     {
         $this->ontology = $this->createMock(Ontology::class);
         $this->emailService = $this->createEmailServiceMock();
         $this->emailService->method('isConfigured')->willReturn(true);
+        $this->eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
+        $this->eligibleUsersProvider->method('getEligibleUserUris')->willReturn(null);
     }
 
     public function testNotifySkipsWhenEmailNotConfigured(): void
@@ -58,7 +61,8 @@ class CommentMentionNotificationServiceTest extends TestCase
         $sut = new CommentMentionNotificationService(
             $this->ontology,
             $emailService,
-            $this->createDeepLinkBuilder()
+            $this->createDeepLinkBuilder(),
+            $this->eligibleUsersProvider
         );
 
         $sut->notifyForComment(
@@ -92,7 +96,7 @@ class CommentMentionNotificationServiceTest extends TestCase
 
     public function testNotifyOnlyNewMentionsOnUpdate(): void
     {
-        $sut = $this->createSut();
+        $sut = $this->createSutWithRecipient(null);
         $this->emailService->expects($this->never())->method('sendCommentMention');
 
         $sut->notifyForCommentUpdate(
@@ -115,6 +119,7 @@ class CommentMentionNotificationServiceTest extends TestCase
             ->method('sendCommentMention')
             ->with(
                 'alice',
+                'alice@example.com',
                 $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
                     $data = $payload->toTemplateData();
 
@@ -123,13 +128,17 @@ class CommentMentionNotificationServiceTest extends TestCase
                         && $data['resourceType'] === ResourceCommentType::ITEM
                         && str_contains($data['resourceUrl'], 'structure=items')
                         && $data['resourceLabel'] === 'Item Label'
-                        && $data['name'] === 'alice';
+                        && $data['name'] === 'Alice Mentioned';
                 }),
                 'alice.author'
             )
             ->willReturn('job-1');
 
-        $sut = $this->createSut();
+        $sut = $this->createSutWithRecipient([
+            'login' => 'alice',
+            'email' => 'alice@example.com',
+            'name' => 'Alice Mentioned',
+        ]);
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -139,21 +148,14 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    public function testNotifySendsMentionWithoutRecipientResolution(): void
+    public function testNotifySkipsRecipientWithoutEmail(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
         $this->ontology->method('getResource')->willReturn($resource);
 
-        $sut = $this->createSut();
-        $this->emailService
-            ->expects($this->once())
-            ->method('sendCommentMention')
-            ->with(
-                'alice',
-                $this->isInstanceOf(CommentMentionEmailTemplatePayload::class),
-                'alice.author'
-            );
+        $sut = $this->createSutWithRecipient(null);
+        $this->emailService->expects($this->never())->method('sendCommentMention');
 
         $sut->notifyForComment(
             $this->comment('<p>Hi @alice</p>'),
@@ -163,7 +165,64 @@ class CommentMentionNotificationServiceTest extends TestCase
         );
     }
 
-    public function testNotifyUsesMentionLoginFromHtmlPayload(): void
+    public function testNotifySkipsIneligibleSubmittedMention(): void
+    {
+        $resource = $this->createMock(core_kernel_classes_Resource::class);
+        $resource->method('getLabel')->willReturn('Item Label');
+        $this->ontology->method('getResource')->willReturn($resource);
+
+        $eligibleUsersProvider = $this->createMock(MentionEligibleUsersProviderInterface::class);
+        $eligibleUsersProvider
+            ->expects($this->once())
+            ->method('getEligibleUserUris')
+            ->with('http://example.test/item#1')
+            ->willReturn(['http://example.test/user#allowed']);
+
+        $this->emailService->expects($this->never())->method('sendCommentMention');
+
+        $sut = new class (
+            $this->ontology,
+            $this->emailService,
+            $this->createDeepLinkBuilder(),
+            $eligibleUsersProvider,
+            [
+                'login' => 'forged-login',
+                'email' => 'forged@example.com',
+                'name' => 'Forged',
+            ]
+        ) extends CommentMentionNotificationService {
+            /** @var array{login: string, email: string, name: ?string}|null */
+            private $fixedRecipient;
+
+            public function __construct(
+                Ontology $ontology,
+                TaskOrchestratorEmailService $emailService,
+                CommentMentionDeepLinkBuilder $deepLinkBuilder,
+                MentionEligibleUsersProviderInterface $eligibleUsersProvider,
+                $fixedRecipient
+            ) {
+                parent::__construct($ontology, $emailService, $deepLinkBuilder, $eligibleUsersProvider);
+                $this->fixedRecipient = $fixedRecipient;
+            }
+
+            protected function resolveMentionRecipient(array $mention): ?array
+            {
+                return $this->fixedRecipient;
+            }
+        };
+
+        $sut->notifyForComment(
+            $this->comment(
+                '<span class="comment-mention" data-user-id="u1" '
+                . 'data-user-login="forged-login">@forged</span>'
+            ),
+            'Alice Author',
+            [['id' => 'u1', 'login' => 'forged-login']],
+            'alice.author'
+        );
+    }
+
+    public function testNotifyUsesResolvedRecipientLoginNotHtmlLogin(): void
     {
         $resource = $this->createMock(core_kernel_classes_Resource::class);
         $resource->method('getLabel')->willReturn('Item Label');
@@ -173,15 +232,20 @@ class CommentMentionNotificationServiceTest extends TestCase
             ->expects($this->once())
             ->method('sendCommentMention')
             ->with(
-                'forged-from-html',
+                'rdf-login',
+                'alice@example.com',
                 $this->callback(static function (CommentMentionEmailTemplatePayload $payload): bool {
-                    return $payload->toTemplateData()['username'] === 'forged-from-html';
+                    return $payload->toTemplateData()['username'] === 'rdf-login';
                 }),
                 'alice.author'
             )
             ->willReturn('job-1');
 
-        $sut = $this->createSut();
+        $sut = $this->createSutWithRecipient([
+            'login' => 'rdf-login',
+            'email' => 'alice@example.com',
+            'name' => 'Alice',
+        ]);
 
         $sut->notifyForComment(
             $this->comment('<span data-user-id="u1" data-user-login="forged-from-html">@x</span>'),
@@ -196,8 +260,42 @@ class CommentMentionNotificationServiceTest extends TestCase
         return new CommentMentionNotificationService(
             $this->ontology,
             $this->emailService,
-            $this->createDeepLinkBuilder()
+            $this->createDeepLinkBuilder(),
+            $this->eligibleUsersProvider
         );
+    }
+
+    /**
+     * @param array{login: string, email: string, name: ?string}|null $recipient
+     */
+    private function createSutWithRecipient($recipient): CommentMentionNotificationService
+    {
+        return new class (
+            $this->ontology,
+            $this->emailService,
+            $this->createDeepLinkBuilder(),
+            $this->eligibleUsersProvider,
+            $recipient
+        ) extends CommentMentionNotificationService {
+            /** @var array{login: string, email: string, name: ?string}|null */
+            private $fixedRecipient;
+
+            public function __construct(
+                Ontology $ontology,
+                TaskOrchestratorEmailService $emailService,
+                CommentMentionDeepLinkBuilder $deepLinkBuilder,
+                MentionEligibleUsersProviderInterface $eligibleUsersProvider,
+                $fixedRecipient
+            ) {
+                parent::__construct($ontology, $emailService, $deepLinkBuilder, $eligibleUsersProvider);
+                $this->fixedRecipient = $fixedRecipient;
+            }
+
+            protected function resolveMentionRecipient(array $mention): ?array
+            {
+                return $this->fixedRecipient;
+            }
+        };
     }
 
     private function comment(string $body): ItemComment
