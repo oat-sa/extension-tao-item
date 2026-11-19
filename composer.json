@@ -49,6 +49,8 @@
         "computer-based-assessment"
     ],
     "type": "tao-extension",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "extra": {
         "tao-extension-name": "taoItems",
         "npm-bridge": {
