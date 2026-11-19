@@ -51,12 +51,6 @@
     "type": "tao-extension",
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/oat-sa/extension-tao-deliver-connect.git"
-        }
-    ],
     "extra": {
         "tao-extension-name": "taoItems",
         "npm-bridge": {
@@ -70,8 +64,7 @@
         "oat-sa/oatbox-extension-installer": "~1.1||dev-master",
         "oat-sa/generis": ">=16.2.2",
         "oat-sa/tao-core": ">=56.12.4",
-        "oat-sa/extension-tao-backoffice": ">=6.0.0",
-        "oat-sa/extension-tao-deliver-connect": "dev-feat/NYSED-86/ownership-move"
+        "oat-sa/extension-tao-backoffice": ">=6.0.0"
     },
     "autoload": {
         "psr-4": {
