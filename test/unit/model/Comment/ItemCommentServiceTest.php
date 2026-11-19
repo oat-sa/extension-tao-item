@@ -33,7 +33,7 @@ use oat\generis\model\data\Ontology;
 use oat\oatbox\session\SessionService;
 use oat\tao\model\accessControl\PermissionCheckerInterface;
 use oat\tao\model\session\Context\UserDataSessionContext;
-use oat\taoItems\model\Comment\CommentMentionNotificationService;
+use oat\taoItems\model\Comment\CommentMentionNotificationServiceInterface;
 use oat\taoItems\model\Comment\CommentMentionParser;
 use oat\taoItems\model\Comment\CommentRichTextSanitizer;
 use oat\tao\model\TaoOntology;
@@ -60,7 +60,7 @@ class ItemCommentServiceTest extends TestCase
     /** @var PermissionCheckerInterface|MockObject */
     private $permissionChecker;
 
-    /** @var CommentMentionNotificationService|MockObject */
+    /** @var CommentMentionNotificationServiceInterface&MockObject */
     private $mentionNotificationService;
 
     private ItemCommentService $sut;
@@ -71,7 +71,7 @@ class ItemCommentServiceTest extends TestCase
         $this->sessionService = $this->createMock(SessionService::class);
         $this->ontology = $this->createMock(Ontology::class);
         $this->permissionChecker = $this->createMock(PermissionCheckerInterface::class);
-        $this->mentionNotificationService = $this->createMock(CommentMentionNotificationService::class);
+        $this->mentionNotificationService = $this->createMock(CommentMentionNotificationServiceInterface::class);
 
         $this->sut = new ItemCommentService(
             $this->persistence,

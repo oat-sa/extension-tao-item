@@ -43,7 +43,7 @@ class ItemCommentService
     private PermissionCheckerInterface $permissionChecker;
     private CommentRichTextSanitizer $commentRichTextSanitizer;
     private CommentMentionParser $commentMentionParser;
-    private CommentMentionNotificationService $commentMentionNotificationService;
+    private CommentMentionNotificationServiceInterface $commentMentionNotificationService;
 
     public function __construct(
         ItemCommentPersistenceInterface $persistence,
@@ -52,7 +52,7 @@ class ItemCommentService
         PermissionCheckerInterface $permissionChecker,
         CommentRichTextSanitizer $commentRichTextSanitizer,
         CommentMentionParser $commentMentionParser,
-        CommentMentionNotificationService $commentMentionNotificationService
+        CommentMentionNotificationServiceInterface $commentMentionNotificationService
     ) {
         $this->persistence = $persistence;
         $this->sessionService = $sessionService;
