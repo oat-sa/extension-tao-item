@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-16 11:03\n"
+"PO-Revision-Date: 2026-11-17 11:11\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -19,11 +19,11 @@ msgstr ""
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Authoring Comment"
-msgstr "作成コメント"
+msgstr "オーサリングコメント"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Collaboration comment attached to an Item, Test, or Asset (not part of content/QTI)"
-msgstr "アイテム、テスト、またはアセットに添付されたコラボレーションコメント (コンテンツ/QTIの一部ではありません)"
+msgstr "アイテム、テスト、またはアセットに紐づくコラボレーションコメント（コンテンツ/QTIの一部ではありません）"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Resource URI"
@@ -35,11 +35,11 @@ msgstr "リソースタイプ"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "RDF class URI of the target: Item, Test, or Media"
-msgstr "ターゲットの RDF クラス URI: 項目、テスト、メディア"
+msgstr "対象（アイテム、テスト、またはメディア）のRDFクラスURI"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Author ID"
-msgstr "投稿者ID"
+msgstr "作成者ID"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Author label"
@@ -59,7 +59,7 @@ msgstr "編集済み"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#comment"
 msgid "Whether the comment body was edited after creation (1/0)"
-msgstr "作成後にコメント本文を編集したかどうか (1/0)"
+msgstr "作成後にコメント本文が編集されたかどうか（1/0）"
 
 msgctxt "http://www.w3.org/2000/01/rdf-schema#label"
 msgid "Resolved"

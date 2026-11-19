@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: tao-open-source\n"
-"PO-Revision-Date: 2026-11-16 10:59\n"
+"PO-Revision-Date: 2026-11-17 11:10\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: ja\n"
@@ -149,7 +149,7 @@ msgid "Failed to get tokens for external previewer"
 msgstr "外部プレビューア用のトークンを取得できませんでした"
 
 msgid "Forbidden action"
-msgstr "禁止アクション"
+msgstr "許可されていない操作です"
 
 msgid "If you continue:"
 msgstr "削除を続行する場合:"
@@ -247,7 +247,7 @@ msgid "Numbered list"
 msgstr "番号付きリスト"
 
 msgid "One or more values cannot be used as automatic test categories."
-msgstr "一つ以上の値は自動テストカテゴリとして使用できません。"
+msgstr "自動テストカテゴリとして使用できない値が1つ以上含まれています。"
 
 msgid "Only items not used in any test will be deleted."
 msgstr "テストで使用されていないアイテムだけが削除されます。"
@@ -333,7 +333,7 @@ msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr "プロパティはカテゴリ追加にさらされます。&#13Remove exposition ?"
 
 msgid "The value \"%s\" cannot be used as an automatic test category."
-msgstr "値 \"%s\" は自動テストカテゴリとして使用できません。"
+msgstr "値： \"%s\" は自動テストカテゴリとして使用できません。"
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
 msgstr "プレビューはスクリーンに合わせてサイズが変更されている可能性があります。最終的にレンダリングは異なる場合があります。"
