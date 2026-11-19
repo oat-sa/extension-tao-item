@@ -134,7 +134,7 @@ msgid "Failed to get tokens for external previewer"
 msgstr "外部プレビューア用のトークンを取得できませんでした"
 
 msgid "Forbidden action"
-msgstr "禁止アクション"
+msgstr "許可されていない操作です"
 
 msgid "If you continue:"
 msgstr "削除を続行する場合:"
@@ -385,7 +385,7 @@ msgid "Numbered list"
 msgstr "番号付きリスト"
 
 msgid "One or more values cannot be used as automatic test categories."
-msgstr "一つ以上の値は自動テストカテゴリとして使用できません。"
+msgstr "自動テストカテゴリとして使用できない値が1つ以上含まれています。"
 
 msgid "Only users with access to this item can be mentioned."
 msgstr "このアイテムへのアクセス権を持つユーザーのみメンションできます。"
@@ -419,7 +419,7 @@ msgid "The comment was not updated."
 msgstr "コメントを更新できませんでした。"
 
 msgid "The value \"%s\" cannot be used as an automatic test category."
-msgstr "値 \"%s\" は自動テストカテゴリとして使用できません。"
+msgstr "値： \"%s\" は自動テストカテゴリとして使用できません。"
 
 msgid "Unable to load comments."
 msgstr "コメントを読み込めませんでした。"
