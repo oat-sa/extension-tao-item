@@ -176,10 +176,36 @@ class AssetTreeBuilder extends ConfigurableService implements
                 $directories[] = $this->toDirectoryStub($child, $search);
             }
         }
-        $data['children'] = $directories;
+        $data['children'] = $this->sortDirectoryStubs($directories);
         unset($data['total'], $data['truncated'], $data['childrenLimit']);
 
         return $data;
+    }
+
+    /**
+     * Resource Manager folder tree: class nodes always ordered by label (case-insensitive).
+     *
+     * @param array<int, array<string, mixed>> $directories
+     * @return array<int, array<string, mixed>>
+     */
+    protected function sortDirectoryStubs(array $directories): array
+    {
+        usort($directories, function (array $left, array $right): int {
+            $result = strcmp(
+                $this->sortValue($left, self::SORT_LABEL),
+                $this->sortValue($right, self::SORT_LABEL)
+            );
+            if ($result === 0) {
+                $result = strcmp(
+                    (string)($left['path'] ?? ''),
+                    (string)($right['path'] ?? '')
+                );
+            }
+
+            return $result;
+        });
+
+        return $directories;
     }
 
     private function maxBrowsePage(int $pageSize): int
