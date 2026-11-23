@@ -228,6 +228,48 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
     {
         $asset = $this->getMediaAsset('deleteAsset');
 
+        $queryParams = $this->getPsrRequest()->getQueryParams();
+        $path = $queryParams['relPath'] ?? $queryParams['path'] ?? null;
+
+        if (is_string($path) && strpos($path, 'taomedia://mediamanager/') === 0) {
+            $relations = [];
+
+            try {
+                $assetUri = tao_helpers_Uri::decode(substr($path, strlen('taomedia://mediamanager/')));
+                $relations = $this->getServiceLocator()
+                    ->get(\oat\tao\model\resources\relation\service\ResourceRelationServiceProxy::SERVICE_ID)
+                    ->findRelations(new \oat\tao\model\resources\relation\FindAllQuery($assetUri, null, 'media'))
+                    ->jsonSerialize();
+            } catch (\Throwable $e) {
+                $this->logWarning(
+                    'Unable to check relations of media asset "' . $path . '": ' . $e->getMessage()
+                );
+            }
+
+            if (count($relations) > 0) {
+                $this->logWarning(
+                    sprintf(
+                        'Media asset "%s" is still used by %d item(s), deletion refused.',
+                        $path,
+                        count($relations)
+                    )
+                );
+
+                $formatter = $this->getResponseFormatter()
+                    ->withJsonHeader()
+                    ->withBody([
+                        'deleted' => false,
+                        'message' => __(
+                            'This file is used in %d item(s) and cannot be deleted. Remove it from those items first.',
+                            count($relations)
+                        ),
+                    ]);
+                $this->setResponse($formatter->format($this->getPsrResponse()));
+
+                return;
+            }
+        }
+
         $deleted = $asset->getMediaSource()->delete($asset->getMediaIdentifier());
 
         $formatter = $this->getResponseFormatter()
