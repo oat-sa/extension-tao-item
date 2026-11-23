@@ -244,6 +244,18 @@ class taoItems_actions_ItemContent extends tao_actions_CommonModule
                 $this->logWarning(
                     'Unable to check relations of media asset "' . $path . '": ' . $e->getMessage()
                 );
+
+                $formatter = $this->getResponseFormatter()
+                    ->withJsonHeader()
+                    ->withBody([
+                        'deleted' => false,
+                        'message' => __(
+                            'The file usage cannot be verified right now. Nothing was deleted, please try again.'
+                        ),
+                    ]);
+                $this->setResponse($formatter->format($this->getPsrResponse()));
+
+                return;
             }
 
             if (count($relations) > 0) {
