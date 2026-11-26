@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: TAO 2026.10\n"
-"PO-Revision-Date: 2026-09-14T13:52:31\n"
+"Project-Id-Version: TAO 2026.12\n"
+"PO-Revision-Date: 2026-11-26T14:42:42\n"
 "Last-Translator: TAO Translation Team <translation@tao.lu>\n"
 "MIME-Version: 1.0\n"
 "Language: en-US\n"
@@ -54,6 +54,9 @@ msgid "Are you sure you want to delete the class %s and all of its content?"
 msgstr ""
 
 msgid "Are you sure you want to delete the item %s?"
+msgstr ""
+
+msgid "Asset search is temporarily unavailable. Please try again."
 msgstr ""
 
 #, tao-public
@@ -315,6 +318,9 @@ msgstr ""
 msgid "The comment was not updated."
 msgstr ""
 
+msgid "The file usage cannot be verified right now. Nothing was deleted, please try again."
+msgstr ""
+
 msgid "The file you tried to upload is not valid"
 msgstr ""
 
@@ -328,6 +334,9 @@ msgid "The property is exposed to category addition.&#13Remove exposition ?"
 msgstr ""
 
 msgid "The value \"%s\" cannot be used as an automatic test category."
+msgstr ""
+
+msgid "This file is used in %d item(s) and cannot be deleted. Remove it from those items first."
 msgstr ""
 
 msgid "This preview may be scaled to fit your screen. The final rendering may differ."
@@ -393,4 +402,3 @@ msgstr ""
 
 msgid "Your path contains error"
 msgstr ""
-
